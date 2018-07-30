@@ -34,21 +34,35 @@ app.post('/api/post', (req, res, next) => {
         title: req.body.title,
         content: req.body.content
     })
-    post.save();
-    res.status(201).json({
-        message: 'Post added successfully'
-    });
+    post.save()
+        .then((createdPost) => {
+            res.status(201).json({
+                message: 'Post added successfully',
+                postId: createdPost._id
+            });
+        })
 })
 
 app.get('/api/posts', (req, res, next) => {
     Post.find()
         .then(documents => {
-            //console.log(documents);
             res.status(200).json({
                 message: 'Post fetched successsfully',
                 posts: documents
             });
         })
 });
+
+app.delete('/api/post/:id', (req, res, next) => {
+    Post.deleteOne({
+        _id: req.params.id
+    }).then(() => {
+        res.status(200).json({
+            message: 'Post fetched successsfully'
+        });
+    }).catch((err) => {
+        console.log(err);
+    })
+})
 
 module.exports = app;
