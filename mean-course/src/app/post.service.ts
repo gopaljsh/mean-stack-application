@@ -28,6 +28,10 @@ export class PostService {
             })
     }
 
+    getPost(id: string) {
+        return {...this.posts.find(p => p.id === id)};
+    }
+
     getPostUpdateListener() {
         return this.postsUpdated.asObservable();
     }
@@ -39,6 +43,18 @@ export class PostService {
                 this.posts = updatedPosts;
                 this.postsUpdated.next([...this.posts]);
             })
+    }
+
+    updatePost(id: string, title: string, content: string) {
+        const post: Post = {
+            id: id,
+            title: title,
+            content: content
+        }
+        this.http.put('http://localhost:3000/api/post/' + id, post)
+            .subscribe((responseData) => {
+                console.log(responseData);
+            });   
     }
 
     addPost(title: string, content: string) {
