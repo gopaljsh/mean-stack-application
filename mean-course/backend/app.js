@@ -50,7 +50,7 @@ app.put('/api/post/:id', (req, res, next) => {
         title: req.body.title,
         content: req.body.content
     });
-    Post.updateOne({_id: req.param.id}, post)
+    Post.updateOne({_id: req.params.id}, post)
         .then((responseData) => {
             res.status(200).json({
                 message: 'Post updated successfully'

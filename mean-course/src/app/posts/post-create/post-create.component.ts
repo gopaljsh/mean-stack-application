@@ -33,10 +33,10 @@ export class PostCreateComponent implements OnInit {
     if(form.invalid) {
       return;
     }
-    if(this.mode === 'edit') {
-      this.postService.updatePost(this.postId, form.value.title, form.value.content);
-    } else {
+    if(this.mode === 'create') {
       this.postService.addPost(form.value.title, form.value.content);
+    } else {
+      this.postService.updatePost(this.postId, form.value.title, form.value.content);
     }
     form.resetForm();
   }
