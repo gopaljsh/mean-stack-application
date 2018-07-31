@@ -58,6 +58,14 @@ app.put('/api/post/:id', (req, res, next) => {
         })
 })
 
+//GET single post
+app.get('/api/post/:id', (req, res, next) => {
+    Post.findById(req.params.id)
+        .then ((singlePost) => {
+            res.status(200).json(singlePost);
+        })
+});
+
 //GET method
 app.get('/api/posts', (req, res, next) => {
     Post.find()
