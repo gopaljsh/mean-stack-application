@@ -6,15 +6,15 @@ const Post = require('../models/post')
 const router = express.Router();
 
 const MIME_TYPE_MAP = {
-    "images/png": "png",
-    "images/jpeg": "jpg",
-    "images/jpg": "jpg"
+    "image/png": "png",
+    "image/jpeg": "jpg",
+    "image/jpg": "jpg"
 }
 
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
         const isValid = MIME_TYPE_MAP[file.mimetype];
-        const error = new Error('Invalid mime type');
+        let error = new Error('Invalid mime type');
         if(isValid) {
             error = null;
         }
