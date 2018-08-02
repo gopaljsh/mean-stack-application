@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 
-import { PostService } from "src/app/post.service";
-import { Post } from "src/app/post.model";
+import { PostService } from "../post.service";
+import { Post } from "../post.model";
 import { Subscription } from "rxjs";
 
 @Component({
