@@ -8,7 +8,7 @@
     <div>
       <button type="button" mat-stroked-button (click)="filePicker.click()">Pick Image</button>
       <input type="file" #filePicker (change)="onImagePicked($event)">
-      <div class="image-preview" *ngIf="imagePreview !== '' && imagePreview">
+      <div class="image-preview" *ngIf="imagePreview !== '' && imagePreview && form.get('image').valid">
         <img [src]="imagePreview" [alt]="form.value.title">
       </div>
     </div>
