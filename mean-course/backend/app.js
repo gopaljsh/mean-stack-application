@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -9,6 +10,7 @@ const postRoutes = require('./routes/posts.js');
 // body-parse middleware 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use('/images', express.static(path.join('backend/images')))
 
 //Mongo database connection
 const db = 'mongodb+srv://gops:zEryTIOtfW3T8epM@cluster0-adefd.mongodb.net/node-angular?retryWrites=true';
