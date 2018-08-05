@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const app = express();
 
 const postRoutes = require('./routes/posts.js');
-
+const userRoutes = require('./routes/user.js');
 
 // body-parse middleware 
 app.use(bodyParser.json());
@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/images', express.static(path.join('backend/images')))
 
 //Mongo database connection
-const db = 'mongodb+srv://gops:zEryTIOtfW3T8epM@cluster0-adefd.mongodb.net/node-angular?retryWrites=true';
+const db = 'mongodb+srv://gops:zEryTIOtfW3T8epM@cluster0-adefd.mongodb.net/node-angular';
 mongoose.connect(db, { useNewUrlParser: true })
     .then(() => {
         console.log('Connected to database')
@@ -31,5 +31,6 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/posts', postRoutes);
+app.use('/api/user', userRoutes);
 
 module.exports = app;
