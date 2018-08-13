@@ -46,7 +46,7 @@ router.post('', multer({storage: storage}).single('image'), (req, res, next) => 
                 }
             });
         })
-})
+});
 
 //UPDATE method
 router.put('/:id', multer({storage: storage}).single('image'), (req, res, next) => {
@@ -67,7 +67,7 @@ router.put('/:id', multer({storage: storage}).single('image'), (req, res, next) 
                 message: 'Post updated successfully'
             })
         })
-})
+});
 
 //GET single post
 router.get('/:id', (req, res, next) => {
