@@ -6,7 +6,6 @@ const User = require('../models/user');
 
 const router = express.Router();
 
-
 router.post('/signup', (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
@@ -54,7 +53,7 @@ router.post('/login', (req, res, next) => {
 
             res.status(200).json({
                 token: token
-            })
+            });
         })
         .catch(err => {
             return res.status(401).json({
