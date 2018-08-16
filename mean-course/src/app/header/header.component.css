@@ -2,7 +2,7 @@ ul {
     list-style-type: none;
     display: flex;
 }
-a {
+a, button {
     color: white;
     text-decoration: none;
     font-weight: normal;
