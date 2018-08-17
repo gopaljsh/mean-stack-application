@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
+import { Router } from "@angular/router";
 
 import { authData } from "../auth/auth-data.model";
 import { Subject } from "rxjs";
@@ -8,12 +9,17 @@ import { Subject } from "rxjs";
 export class AuthService {
     private token: string;
     isAuthenticated = false;
+    logoutTimer: any;
     private authServiceListner = new Subject<boolean>();
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, private router: Router) {}
 
     getToken() {
         return this.token;
+    }
+
+    getIsAuth() {
+        return this.isAuthenticated;
     }
 
     getAuthServiceListner() {
@@ -37,14 +43,28 @@ export class AuthService {
 
     login(email: string, password: string) {
         const authData: authData = {email: email, password: password};
-        this.http.post<{token: string}>('http://localhost:3000/api/user/login', authData)
+        this.http.post<{token: string, expirationIn: number}>('http://localhost:3000/api/user/login', authData)
             .subscribe(response => {
+                console.log(response)
                 const token = response.token;
                 this.token = token;
+                const expirationIn = response.expirationIn;
+                this.logoutTimer = setTimeout(() => {
+                    this.logout();
+                }, expirationIn); 
                 if(token) {
                     this.isAuthenticated = true;
                     this.authServiceListner.next(true);
+                    this.router.navigate(['/'])
                 }
             })
+    }
+
+    logout() {
+        this.token = null;
+        this.isAuthenticated = false;
+        this.authServiceListner.next(false);
+        clearTimeout(this.logoutTimer);
+        this.router.navigate(['/'])
     }
 }
