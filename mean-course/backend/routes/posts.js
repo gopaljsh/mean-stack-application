@@ -35,10 +35,10 @@ router.post('', checkAuth, multer({storage: storage}).single('image'), (req, res
     const post = new Post({
         title: req.body.title,
         content: req.body.content,
-        imagePath: url + '/images/' + req.file.filename
+        imagePath: url + '/images/' + req.file.filename,
+        creator: req.userData.userId
     });
-    console.log(req.userData);
-    return res.status(200).json({});
+
     post.save()
         .then((createdPost) => {
             res.status(201).json({
@@ -64,11 +64,18 @@ router.put('/:id', checkAuth, multer({storage: storage}).single('image'), (req, 
         content: req.body.content,
         imagePath: imagePath
     });
-    Post.updateOne({_id: req.params.id}, post)
+    Post.updateOne({_id: req.params.id, creator: req.userData.userId}, post)
         .then((responseData) => {
-            res.status(200).json({
-                message: 'Post updated successfully'
-            })
+            if(responseData.nModified > 0) {
+                res.status(200).json({
+                    message: 'Post updated successfully'
+                });
+            } else {
+                res.status(401).json({
+                    message: "Your not authorised to update !"
+                });
+            }
+            
         })
 });
 
@@ -107,11 +114,18 @@ router.get('', (req, res, next) => {
 
 router.delete('/:id', checkAuth, (req, res, next) => {
     Post.deleteOne({
-        _id: req.params.id
-    }).then(() => {
-        res.status(200).json({
-            message: 'Post fetched successsfully'
-        });
+        _id: req.params.id,
+        creator: req.userData.userId
+    }).then((result) => {
+        if(result.n > 0) {
+            res.status(200).json({
+                message: 'Post fetched successsfully'
+            });
+        } else {
+            res.status(401).json({
+                message: 'You are not authorized to delete post'
+            });
+        }
     }).catch((err) => {
         console.log(err);
     })
